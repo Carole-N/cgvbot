@@ -7,9 +7,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=example
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
-      - /db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     restart: always
 
   adminer:
@@ -17,4 +17,4 @@ services:
     container_name: adminer_cnn
     restart: always
     ports:
-      - 8080:8080
+      - 8081:8080
