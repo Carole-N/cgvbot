@@ -4,7 +4,7 @@ from datetime import datetime
 def sauvegarder_echange(prompt, reponse, date, statut):
         # Connexion à la base de données
         connexion = mysql.connect(
-            host='localhost',
+            host='db',
             user='root',       # à adapter
             password='example',  # à adapter
             database='cgvbot',
