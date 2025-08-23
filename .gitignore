@@ -1,0 +1,20 @@
+# Environnements virtuels
+.venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Secrets ou configs locales
+.env
+
+# Bases locales
+*.db
+*.sqlite
+data/db/
+
+# Fichiers systèmes ou inutiles
+.DS_Store
+*.log
