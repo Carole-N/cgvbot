@@ -1,7 +1,8 @@
+# 📁 app.py
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-from sql import sauvegarder_echange
+from sql import sauvegarder_echange, chercher_reponse_existante
 from datetime import datetime
 
 # Charger la clé API
@@ -26,20 +27,27 @@ while continuer:
         print("À bientôt.")
         continuer = False
     else:
-        resultat = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": contexte},
-                {"role": "user", "content": question}
-            ]
-        )
+        # Vérifier si la question a déjà une réponse enregistrée
+        reponse_existante = chercher_reponse_existante(question)
 
-        reponse = resultat.choices[0].message.content
-        print("\nRéponse :", reponse)
+        if reponse_existante:
+            reponse = reponse_existante
+            print("\nRéponse (déjà connue) :", reponse)
+        else:
+            resultat = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": contexte},
+                    {"role": "user", "content": question}
+                ]
+            )
 
-        # Enregistrement dans la base
-        try:
-            sauvegarder_echange(question, reponse, datetime.now(), 1)
-            print("Échange enregistré dans la base de données.")
-        except Exception as e:
-            print("Erreur lors de l'enregistrement :", e)
+            reponse = resultat.choices[0].message.content
+            print("\nRéponse :", reponse)
+
+            # Enregistrement dans la base
+            try:
+                sauvegarder_echange(question, reponse, datetime.now(), 1)
+                print("Échange enregistré dans la base de données.")
+            except Exception as e:
+                print("Erreur lors de l'enregistrement :", e)
